@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complex Dropdown</title>
+</head>
+<body>
+    <h1>Select your desert</h1>
+    <div id="container"></div>
+
+    <script>
+        // Create outer shadow DOM
+        const container = document.getElementById('container');
+        const outerShadow = container.attachShadow({mode: 'open'});
+        
+        // Create iframe in outer shadow DOM
+        const iframe = document.createElement('iframe');
+        iframe.style.width = '300px';
+        iframe.style.height = '200px';
+        iframe.style.border = 'none';
+        outerShadow.appendChild(iframe);
+        
+        // Create content for iframe with inner shadow DOM
+        const iframeContent = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body { margin: 20px; font-family: Arial, sans-serif; }
+                    select { padding: 8px; font-size: 16px; }
+                </style>
+            </head>
+            <body>
+                <div id="inner-container"></div>
+                <script>
+                    const innerContainer = document.getElementById('inner-container');
+                    const innerShadow = innerContainer.attachShadow({mode: 'open'});
+                    
+                    const dropdown = document.createElement('select');
+                    dropdown.innerHTML = \`
+                        <option value="">Choose a desert...</option>
+                        <option value="pie">Pie</option>
+                        <option value="cake">Cake</option>
+                        <option value="knnafe">Knnafe</option>
+                    \`;
+                    
+                    innerShadow.appendChild(dropdown);
+                <\/script>
+            </body>
+            </html>
+        `;
+        
+        iframe.onload = function() {
+            iframe.contentDocument.open();
+            iframe.contentDocument.write(iframeContent);
+            iframe.contentDocument.close();
+        };
+        
+        iframe.src = 'about:blank';
+    </script>
+</body>
+</html>
