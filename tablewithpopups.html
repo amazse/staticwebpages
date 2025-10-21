@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Table</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <th>Customer Name</th>
+            <th>Phone Number</th>
+            <th>Address</th>
+        </tr>
+        <tr><td>John Smith</td><td>555-0101</td><td><button onclick="showColor('John Smith')">Favorite Colour</button></td></tr>
+        <tr><td>Jane Doe</td><td>555-0102</td><td><button onclick="showColor('Jane Doe')">Favourite Colour</button></td></tr>
+        <tr><td>Mike Johnson</td><td>555-0103</td><td><button onclick="showColor('Mike Johnson')">Favorite Colour</button></td></tr>
+        <tr><td>Sarah Wilson</td><td>555-0104</td><td><button onclick="showColor('Sarah Wilson')">Favorite Colour</button></td></tr>
+        <tr><td>David Brown</td><td>555-0105</td><td><button onclick="showColor('David Brown')">Favorite Colour</button></td></tr>
+        <tr><td>Lisa Davis</td><td>555-0106</td><td><button onclick="showColor('Lisa Davis')">Favorite Colour</button></td></tr>
+        <tr><td>Tom Miller</td><td>555-0107</td><td><button onclick="showColor('Tom Miller')">Favorite Colour</button></td></tr>
+        <tr><td>Amy Garcia</td><td>555-0108</td><td><button onclick="showColor('Amy Garcia')">Favorite Colour</button></td></tr>
+        <tr><td>Chris Lee</td><td>555-0109</td><td><button onclick="showColor('Chris Lee')">Favorite Colour</button></td></tr>
+        <tr><td>Emma Taylor</td><td>555-0110</td><td><button onclick="showColor('Emma Taylor')">Favorite Colour</button></td></tr>
+    </table>
+
+    <script>
+        let popup;
+        function showColor(name) {
+            if (popup) popup.close();
+            popup = window.open('', 'popup', 'width=300,height=200');
+            const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple'];
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) {
+                hash = ((hash << 5) - hash + name.charCodeAt(i)) & 0xffffffff;
+            }
+            const colorIndex = Math.abs(hash) % colors.length;
+            popup.document.write('<h3>Favorite Color: ' + colors[colorIndex] + '</h3>');
+        }
+    </script>
+</body>
+</html>
