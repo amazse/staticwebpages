@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Menu</title>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #222; }
+        canvas { border: 1px solid #fff; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let currentScreen = 'main';
+        let saltyToggle = false;
+        
+        const screens = {
+            main: { title: 'Main Menu', options: ['Settings', 'Start', 'Exit'] },
+            settings: { title: 'Settings', options: [`Salty: ${saltyToggle ? 'On' : 'Off'}`] },
+            gameOver: { title: 'Game Over', options: [] },
+            letsPlay: { title: "Let's Play", options: [] }
+        };
+        
+        function draw() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '24px Arial';
+            ctx.textAlign = 'center';
+            
+            const screen = screens[currentScreen];
+            ctx.fillText(screen.title, canvas.width/2, 60);
+            
+            ctx.font = '18px Arial';
+            screen.options.forEach((option, i) => {
+                ctx.fillText(option, canvas.width/2, 120 + i * 40);
+            });
+        }
+        
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const y = e.clientY - rect.top;
+            const optionIndex = Math.floor((y - 100) / 40);
+            
+            if (optionIndex < 0 || optionIndex >= screens[currentScreen].options.length) return;
+            
+            if (currentScreen === 'main') {
+                if (optionIndex === 0) currentScreen = 'settings';
+                else if (optionIndex === 1) currentScreen = 'letsPlay';
+                else if (optionIndex === 2) currentScreen = 'gameOver';
+            } else if (currentScreen === 'settings') {
+                if (optionIndex === 0) {
+                    saltyToggle = !saltyToggle;
+                    screens.settings.options[0] = `Salty: ${saltyToggle ? 'On' : 'Off'}`;
+                } else if (optionIndex === 1) currentScreen = 'main';
+            } else {
+                currentScreen = 'main';
+            }
+            
+            draw();
+        });
+        
+        draw();
+    </script>
+</body>
+</html>
